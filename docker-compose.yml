@@ -12,6 +12,9 @@ services:
       - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      # Per-service databases/roles, created only when the volume is first
+      # initialized (see postgres/init/01-create-service-databases.sql).
+      - ./postgres/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U banking -d banking"]
       interval: 5s
