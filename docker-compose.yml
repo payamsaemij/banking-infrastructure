@@ -20,6 +20,17 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+    networks:
+      - banking
 
 volumes:
   postgres_data:
+
+# The one shared Docker network for the whole local banking environment.
+# This project creates and owns it; banking-identity and banking-accounts
+# join it as an EXTERNAL network (fixed name, no compose-generated
+# "<project>_default" dependency) to reach this PostgreSQL by the DNS
+# name `banking-postgres:5432`.
+networks:
+  banking:
+    name: banking
